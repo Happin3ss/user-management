@@ -1,6 +1,10 @@
 #!/usr/bin/env groovy
 
 node {
+    def branch = env.BRANCH_NAME
+    def imageName = 'user-management'
+    def imageTag = ''
+
     stage('Preparation') {
         // TOTO: clean up docker images which were built before
         // IDEA: use 'Shell Script' step to remove all docker images
@@ -35,19 +39,22 @@ node {
                   ]
         ])
 
-        imageTag = buildImageTagFromPomFile(branch)
-
-        // Change build name
-        currentBuild.displayName = imageTag
 
         // TODO: build image tag, later we will use this tag to tag docker image in this build
         // IDEA: some of global variables that might interesting!
+        imageTag = buildImageTagFromPomFile(branch)
+
         stage('BUILD PROJECT') {
             // TODO: execute maven build
             // IDEA: use 'Shell Script' step, and also see README.md - how to build project
+            sh './mvnw clean install'
+            println('build done')
         }
 
         // TODO: may be change display name of this build to display image tab
+
+        // Change build name
+        currentBuild.displayName = imageTag
     }
 }
 // GENERAL HELPERS
