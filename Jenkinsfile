@@ -5,8 +5,7 @@ node {
 		stage('PREPARATION') {
       // TOTO: clean up docker images which were built before
       // IDEA: use 'Shell Script' step to remove all docker images
-      sh 'docker rm $(docker images -a -q)'
-
+      sh returnStatus: true, script: 'docker rmi -f $(docker images -q)'
       // TODO: setup tools: Java, Maven...
       // IDEA: use 'Tool' step to get path of installed Java, then set Java path into env.PATH
 
