@@ -1,10 +1,11 @@
 #!/usr/bin/env groovy
 
+def imageName='vvhoang-img'
 def imageTag =''
 node {
     stage('PREPARATION') {
     		// TOTO: clean up docker images which were built before
-    		sh "docker image prune -fa"
+    		sh sh(returnStdout: true, script: "docker rmi -f $imageName")
 
             env.JAVA_HOME = "${tool name: 'Java8', type: 'jdk'}"
             println "$env.JAVA_HOME"
@@ -21,6 +22,7 @@ node {
     }
     stage('BUILD PROJECT') {
     		sh './mvnw clean install'
+    		sh "docker build -t $imageName ."
     	}
 }
 String buildImageTagFromPomFile(String branch) {
