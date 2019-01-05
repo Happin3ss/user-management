@@ -46,6 +46,12 @@ node {
 		// Change build name
 		currentBuild.displayName = imageTag
     }
+
+    stage('BUILD PROJECT') {
+		//execute maven build
+        sh returnStatus: true, script: '''cd user-management
+            ./mvnw clean install'''
+	}
 }
 
 // GENERAL HELPERS
