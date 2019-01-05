@@ -5,11 +5,16 @@ node {
 		stage('PREPARATION') {
       // TOTO: clean up docker images which were built before
       // IDEA: use 'Shell Script' step to remove all docker images
-      // sh returnStatus: true, script: 'docker rmi -f $(docker images -q)'
-      sh 'docker rmi -f $(docker images -q)'
+      sh returnStatus: true, script: 'docker rmi -f $(docker images -q)'
+      // sh 'docker rmi -f $(docker images -q)'
 
       // TODO: setup tools: Java, Maven...
       // IDEA: use 'Tool' step to get path of installed Java, then set Java path into env.PATH
+      // tool name: 'Java8', type: 'jdk'
+      env.JAVA_HOME="${tool 'Java8'}"
+      env.PATH="${env.JAVA_HOME}/bin:${env.PATH}"
+      sh 'java -version'
+
 
       // TODO: checkout project, please remember to checkout only your branch!
       // IDEA: use 'Checkout' step
