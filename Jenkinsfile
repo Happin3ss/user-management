@@ -6,6 +6,7 @@ node {
     		// IDEA: use 'Shell Script' step to remove all docker images
 
             env.JAVA_HOME = "${tool name: 'Java8', type: 'jdk'}"
+            println "$env.JAVA_HOME"
             env.PATH = "$env.JAVA_HOME:$env.PATH"
     		// TODO: setup tools: Java, Maven...
     		// IDEA: use 'Tool' step to get path of installed Java, then set Java path into env.PATH
